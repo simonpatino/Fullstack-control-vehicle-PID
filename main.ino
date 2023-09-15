@@ -56,21 +56,21 @@ PWM_Setup motorThreePWM(motorThreePWMPin, motorThreeChannel, motorThreeFrequency
 
 PWM_Setup motorFourthPWM(motorFourthPWMPin, motorFourthChannel, motorFourthFrequency, motorFourthResolution);
 
-Motor_L29 motorOne(motorOnePinOne,motorOnePinTwo, motorOneChannel);
+Motor_L29 motorOne(motorOnePinOne,motorOnePinTwo, motorOneChannel, motorOnePinOneEncoder, motorOnePinTwoEncoder);
 
-Motor_L29 motorTwo(motorTwoPinOne, motorTwoPinTwo, motorTwoChannel);
+Motor_L29 motorTwo(motorTwoPinOne, motorTwoPinTwo, motorTwoChannel,motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
 
-Motor_L29 motorThree(motorThreePinOne, motorThreePinTwo,motorThreeChannel);
+Motor_L29 motorThree(motorThreePinOne, motorThreePinTwo,motorThreeChannel,motorThreePinOneEncoder, motorThreePinTwoEncoder);
 
-Motor_L29 motorFourth(motorFourthPinOne,motorFourthPinTwo, motorFourthChannel);
+Motor_L29 motorFourth(motorFourthPinOne,motorFourthPinTwo, motorFourthChannel,motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
 
-ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
+//ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
 
-ControlPID motorTwoPID(motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
+//ControlPID motorTwoPID(motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
 
-ControlPID motorThreePID(motorThreePinOneEncoder, motorThreePinTwoEncoder);
+//ControlPID motorThreePID(motorThreePinOneEncoder, motorThreePinTwoEncoder);
 
-ControlPID motorFourthPID(motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
+//ControlPID motorFourthPID(motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
 
 
 void setup() {
@@ -83,14 +83,33 @@ void setup() {
 
   //attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),motorFourthPID.readEncoder,RISING);
 
-  motorOnePID.encoderRutine();
+  //motorOnePID.encoderRutine();
 
-  motorTwoPID.encoderRutine();
+  //motorTwoPID.encoderRutine();
 
-  motorThreePID.encoderRutine();
+  //motorThreePID.encoderRutine();
 
-  motorFourthPID.encoderRutine();
-  
+  //motorFourthPID.encoderRutine();
+
+   motorOne.dynamic->encoderRutine();
+
+   motorOne.dynamic->setResolution(motorOnePWM.Resolution);
+
+   motorTwo.dynamic->encoderRutine();
+
+   motorTwo.dynamic->setResolution(motorTwoPWM.Resolution);
+
+   motorThree.dynamic->encoderRutine();
+
+   motorThree.dynamic->setResolution(motorThreePWM.Resolution);
+
+   motorFourth.dynamic->encoderRutine();
+
+   motorFourth.dynamic->setResolution(motorFourthPWM.Resolution);
+
+   
+
+
 }
 
 void loop() {

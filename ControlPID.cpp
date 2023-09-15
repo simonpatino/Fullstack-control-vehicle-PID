@@ -94,4 +94,27 @@ void ControlPID::calculatePID(float velocityInput )
 
   PID =  kp*errorValue + kd*errorDerivative + ki*errorIntegral;
 
+  if (PID > normalizeResolution){
+
+    PID = normalizeResolution;
+
+  }
+
+  else if ( PID < -normalizeResolution){
+
+    PID = -normalizeResolution;
+
+  }
+
+  
+
+}
+
+void ControlPID::setResolution(int Resolution)
+{
+
+  resolution =  Resolution;
+
+  normalizeResolution = pow(2, resolution) -1;
+
 }

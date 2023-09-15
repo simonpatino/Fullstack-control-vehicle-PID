@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "ControlPID.h"
 
-Motor_L29::Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel)
+Motor_L29::Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel,  int ENCA_ONE, int ENCA_TWO)
 {
 
     MotorPinOneSetUp = MotorPinOne;
@@ -11,16 +11,40 @@ Motor_L29::Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel)
 
     Channel= PWMChannel;
 
+   
     pinMode(MotorPinOne, OUTPUT);
 
     pinMode(MotorPinTwo, OUTPUT);
 
-    ControlPID dynamic(2,2);
+    ControlPID ax(ENCA_ONE, ENCA_TWO);
+
+    dynamic = &ax;
+
     
 }
 
 void Motor_L29::SetSpeed(int Velocity)
 {
+
+  if(Velocity > 0)
+    {
+
+        digitalWrite(MotorPinOneSetUp, HIGH);
+
+        digitalWrite(MotorPinOneSetUp, LOW);
+
+    } 
+
+    else if (Velocity < 0)
+    {
+
+        digitalWrite(MotorPinOneSetUp, LOW);
+
+        digitalWrite(MotorPinTwoSetUp, HIGH);
+
+    }
+   
+
 
  ledcWrite(Channel, Velocity); 
 
@@ -28,6 +52,9 @@ void Motor_L29::SetSpeed(int Velocity)
 
 void Motor_L29::run(String Direction)
 {
+
+
+  // Old command, setSpeed now can determine the direction 
 
     if(Direction == "FORWARD")
     {

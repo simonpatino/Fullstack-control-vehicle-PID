@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#include "ControlPID.h"
 
 class Motor_L29 
 {   
@@ -9,6 +10,12 @@ class Motor_L29
     int Channel;
 
     int MotorPinOneSetUp, MotorPinTwoSetUp;
+    
+
+    ControlPID* dynamic;
+    
+    
+
 
     Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel, int ENCA_ONE, int ENCA_TWO);
 

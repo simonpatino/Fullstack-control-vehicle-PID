@@ -38,6 +38,11 @@ class ControlPID
 
   volatile float PID;
 
+  int normalizeResolution;
+
+  int resolution;
+
+  void setResolution(int Resolution);
   
   ControlPID(int ENCA_ONE, int ENCA_TWO);
 
