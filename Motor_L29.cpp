@@ -26,7 +26,11 @@ Motor_L29::Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel,  int ENCA
 void Motor_L29::SetSpeed(int Velocity)
 {
 
-  if(Velocity > 0)
+  dynamic->calculatePID(Velocity);
+
+  velocityProcessed = dynamic->PID;
+  
+  if(velocityProcessed > 0)
     {
 
         digitalWrite(MotorPinOneSetUp, HIGH);
@@ -35,7 +39,7 @@ void Motor_L29::SetSpeed(int Velocity)
 
     } 
 
-    else if (Velocity < 0)
+    else if (velocityProcessed < 0)
     {
 
         digitalWrite(MotorPinOneSetUp, LOW);
@@ -46,7 +50,7 @@ void Motor_L29::SetSpeed(int Velocity)
    
 
 
- ledcWrite(Channel, Velocity); 
+ ledcWrite(Channel, abs(velocityProcessed)); 
 
 }
 

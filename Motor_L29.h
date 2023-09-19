@@ -11,12 +11,10 @@ class Motor_L29
 
     int MotorPinOneSetUp, MotorPinTwoSetUp;
     
-
     ControlPID* dynamic;
-    
-    
 
-
+    volatile float velocityProcessed; 
+    
     Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel, int ENCA_ONE, int ENCA_TWO);
 
     void SetSpeed(int Velocity);
