@@ -64,6 +64,8 @@ Motor_L29 motorThree(motorThreePinOne, motorThreePinTwo,motorThreeChannel,motorT
 
 Motor_L29 motorFourth(motorFourthPinOne,motorFourthPinTwo, motorFourthChannel,motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
 
+EngineHB controlCenter;
+
 //ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
 
 //ControlPID motorTwoPID(motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
@@ -107,12 +109,16 @@ void setup() {
 
    motorFourth.dynamic->setResolution(motorFourthPWM.Resolution);
 
-   
-
-
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+
+  controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
 
 }
+
+
+
+
+
