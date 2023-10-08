@@ -1,5 +1,9 @@
-#pragma once
 
+#pragma once 
+//#ifndef ControlPID
+//#define ControlPID
+
+#include <Arduino.h>
 
 class ControlPID
 {
@@ -38,9 +42,13 @@ class ControlPID
 
   volatile float PID;
 
+  volatile float pos;
+
   int normalizeResolution;
 
   int resolution;
+
+  void setParameters(volatile float velocity );
 
   void setResolution(int Resolution);
   
@@ -48,22 +56,25 @@ class ControlPID
 
   void encoderRutine();
 
-  void readEncoder();
+  void readEncoder(volatile int increment);
 
-  void calculatePID(float velocityInput);
+  void calculatePID(float velocityGoal, float velocity);
 
   private:
 
-   static ControlPID* objectInstance;
+   //static ControlPID* objectInstance;
    
-   static void staticEncoderRutine();
+   //static void staticEncoderRutine();
 
   protected:
 
-    const float kp = 1;
+    const float kp = 2.5;
 
-    const float ki = 0;
+    const float ki = 4;
 
     const float kd = 0;
   
 };
+
+
+//#endif

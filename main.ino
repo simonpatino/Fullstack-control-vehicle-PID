@@ -2,51 +2,52 @@
 #include "EngineHB.h"
 #include "ControlPID.h"
 #include "Motor_L29.h"
+#include <Arduino.h>
 
-#define motorOneFrequency 2
-#define motorTwoFrequency 2
-#define motorThreeFrequency 2
-#define motorFourthFrequency 2
+#define motorOneFrequency 490
+#define motorTwoFrequency 490
+#define motorThreeFrequency 490
+#define motorFourthFrequency 490
 
-#define motorOneChannel 2
-#define motorTwoChannel 2
+#define motorOneChannel 0
+#define motorTwoChannel 1
 #define motorThreeChannel 2
-#define motorFourthChannel 2
+#define motorFourthChannel 3
 
-#define motorOneResolution 2
-#define motorTwoResolution 2
-#define motorThreeResolution 2
-#define motorFourthResolution 2
+#define motorOneResolution 8
+#define motorTwoResolution 8
+#define motorThreeResolution 8
+#define motorFourthResolution 8
 
-#define motorOnePWMPin 2
-#define motorTwoPWMPin 2
-#define motorThreePWMPin 2
-#define motorFourthPWMPin 2
+#define motorOnePWMPin 27
+#define motorTwoPWMPin 33
+#define motorThreePWMPin 4
+#define motorFourthPWMPin 19
 
-#define motorOnePinOne 2
-#define motorOnePinTwo 2
+#define motorOnePinOne 14
+#define motorOnePinTwo 12
 
-#define motorTwoPinOne 2
-#define motorTwoPinTwo 2
+#define motorTwoPinOne 25
+#define motorTwoPinTwo 26
 
-#define motorThreePinOne 2
-#define motorThreePinTwo 2
+#define motorThreePinOne 36
+#define motorThreePinTwo 39
 
-#define motorFourthPinOne 2
-#define motorFourthPinTwo 2
+#define motorFourthPinOne 21
+#define motorFourthPinTwo 3
 
+#define motorOnePinOneEncoder 16
+#define motorOnePinTwoEncoder 17
 
-#define motorOnePinOneEncoder 2
-#define motorOnePinTwoEncoder  2
+#define motorTwoPinOneEncoder 18
+#define motorTwoPinTwoEncoder 5
 
-#define motorTwoPinOneEncoder  2
-#define motorTwoPinTwoEncoder  2
+#define motorThreePinOneEncoder  23
+#define motorThreePinTwoEncoder  22
 
-#define motorThreePinOneEncoder  2
-#define motorThreePinTwoEncoder  2
+#define motorFourthPinOneEncoder  13
+#define motorFourthPinTwoEncoder  15
 
-#define motorFourthPinOneEncoder  2
-#define motorFourthPinTwoEncoder  2
 
 PWM_Setup motorOnePWM(motorOnePWMPin, motorOneChannel, motorOneFrequency, motorOneResolution);
 
@@ -56,6 +57,7 @@ PWM_Setup motorThreePWM(motorThreePWMPin, motorThreeChannel, motorThreeFrequency
 
 PWM_Setup motorFourthPWM(motorFourthPWMPin, motorFourthChannel, motorFourthFrequency, motorFourthResolution);
 
+
 Motor_L29 motorOne(motorOnePinOne,motorOnePinTwo, motorOneChannel, motorOnePinOneEncoder, motorOnePinTwoEncoder);
 
 Motor_L29 motorTwo(motorTwoPinOne, motorTwoPinTwo, motorTwoChannel,motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
@@ -64,26 +66,56 @@ Motor_L29 motorThree(motorThreePinOne, motorThreePinTwo,motorThreeChannel,motorT
 
 Motor_L29 motorFourth(motorFourthPinOne,motorFourthPinTwo, motorFourthChannel,motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
 
-EngineHB controlCenter;
+//EngineHB controlCenter;
 
-//ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
+ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
 
-//ControlPID motorTwoPID(motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
+ControlPID motorTwoPID(motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
 
-//ControlPID motorThreePID(motorThreePinOneEncoder, motorThreePinTwoEncoder);
+ControlPID motorThreePID(motorThreePinOneEncoder, motorThreePinTwoEncoder);
 
-//ControlPID motorFourthPID(motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
+ControlPID motorFourthPID(motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
+
+volatile int positions[] = {0,0,0,0};
+
+const int enca[] = {motorOnePinOneEncoder,motorTwoPinOneEncoder,motorThreePinOneEncoder,motorFourthPinOneEncoder};
+
+//const int encb[] = {4,5};
+
+//const int pwm[] = {9,13};
+
+//const int in1[] = {8,11};
+
+//nst int in2[] = {10,12};
+
+volatile float velocity[] = {0,0,0,0};
+
+volatile float prevelocity[] = {0,0,0,0};
+
+volatile float currT_velocity[]= {0,0,0,0};
+
+volatile float prevT_velocity[]= {0,0,0,0};
+
+volatile float deltaT_velocity[]= {0,0,0,0};
+
+volatile float preprevelocity[] = {0,0,0,0};
+
+volatile float vfilter[] = {0,0,0,0};
+
+#include "templates.h"
+
+
 
 
 void setup() {
+      
+  attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
-  //attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),motorOnePID.readEncoder,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
 
-  //attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),motorTwoPID.readEncoder,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
 
- // attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),motorThreePID.readEncoder,RISING);
-
-  //attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),motorFourthPID.readEncoder,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
 
   //motorOnePID.encoderRutine();
 
@@ -93,32 +125,91 @@ void setup() {
 
   //motorFourthPID.encoderRutine();
 
-   motorOne.dynamic->encoderRutine();
+  motorOnePID.setResolution(motorOnePWM.Resolution);
 
-   motorOne.dynamic->setResolution(motorOnePWM.Resolution);
+  motorTwoPID.setResolution(motorTwoPWM.Resolution);
 
-   motorTwo.dynamic->encoderRutine();
+  motorThreePID.setResolution(motorThreePWM.Resolution);
 
-   motorTwo.dynamic->setResolution(motorTwoPWM.Resolution);
+  motorFourthPID.setResolution(motorFourthPWM.Resolution);
 
-   motorThree.dynamic->encoderRutine();
 
-   motorThree.dynamic->setResolution(motorThreePWM.Resolution);
 
-   motorFourth.dynamic->encoderRutine();
+   //pinMode(12, OUTPUT);
 
-   motorFourth.dynamic->setResolution(motorFourthPWM.Resolution);
+   //pinMode(14, OUTPUT);
+   
+   //digitalWrite(12,LOW);
+
+   //digitalWrite(14,HIGH);
+
+ 
+
+   //ledcSetup(0, 1000, 8); 
+
+   //ledcAttachPin(27, 0);
+
+   //ledcWrite(0, 254);
+
+   Serial.begin(9600);
+
+   //motorOne.run("FORWAR");
+
+   //motorTwo.run("FORWARD");
+
+   motorThree.run("FORWAR");
+
+   motorFourth.run("FORWARD");
+
 
 }
 
 void loop() {
   
 
-  controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
+  //controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
+
+  //ledcWrite(motorOneChannel, 255);
+
+  
+
+  //Serial.println("xd");
+
+  //motorOnePID.calculatePID(300,vfilter[0]);
+  //motorOne.SetSpeed(motorOnePID.PID);
+
+  //motorTwoPID.calculatePID(300,vfilter[1]);
+  //motorTwo.SetSpeed(motorTwoPID.PID);
+
+  //motorThreePID.calculatePID(300,vfilter[2]);
+  //motorThree.SetSpeed(motorThreePID.PID);
+
+  //motorFourthPID.calculatePID(300,vfilter[3]);
+  //motorFourth.SetSpeed(motorFourthPID.PID);
+
+   //Serial.print(",");
+  Serial.print(vfilter[0]);
+  Serial.print(",");
+   Serial.print(vfilter[1]);
+  Serial.print(",");
+   Serial.print(vfilter[2]);
+  Serial.print(",");
+  //Serial.println(150);
+  //Serial.println(motorOnePID.PID);
+  //Serial.println(",");
+
+  Serial.println(vfilter[3]);
+  //Serial.println(",");
+
+  //Serial.println(motorOnePID.PID);
+  //Serial.println(",");
+
+  //Serial.println(velocity[1]);
+  //Serial.print(",");
+  //Serial.println(motorTwoPID.PID);
+
+  
+
+  
 
 }
-
-
-
-
-

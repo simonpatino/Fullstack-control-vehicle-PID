@@ -1,4 +1,7 @@
+
+
 #include "PWM_Setup.h"
+
 #include <Arduino.h>
 
 
@@ -16,5 +19,7 @@ PWM_Setup::PWM_Setup(int PWMPin, int PWMChannel, int PWMFrequency, int PWMresolu
     ledcSetup(Channel, Frequency, Resolution); 
 
     ledcAttachPin(Pin, Channel);
+
+    ledcWrite(Channel, 150);
 
 }

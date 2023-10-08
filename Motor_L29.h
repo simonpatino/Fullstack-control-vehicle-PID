@@ -1,6 +1,14 @@
-#pragma once
+
+
+#pragma once 
+
+//#ifndef Motor_L29
+//#define Motor_L29
+
 #include <Arduino.h>
+
 #include "ControlPID.h"
+
 
 class Motor_L29 
 {   
@@ -11,7 +19,7 @@ class Motor_L29
 
     int MotorPinOneSetUp, MotorPinTwoSetUp;
     
-    ControlPID* dynamic;
+    //ControlPID* dynamic;
 
     volatile float velocityProcessed; 
     
@@ -28,3 +36,7 @@ class Motor_L29
     protected: 
 
 };
+
+
+
+//#endif

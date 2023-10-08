@@ -11,40 +11,46 @@ Motor_L29::Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel,  int ENCA
 
     Channel= PWMChannel;
 
-   
-    pinMode(MotorPinOne, OUTPUT);
+    pinMode(MotorPinOneSetUp, OUTPUT);
 
-    pinMode(MotorPinTwo, OUTPUT);
+    pinMode(MotorPinTwoSetUp, OUTPUT);
 
-    ControlPID ax(ENCA_ONE, ENCA_TWO);
+    //ControlPID ax(ENCA_ONE, ENCA_TWO);
 
-    dynamic = &ax;
-
-    
+    //dynamic = &ax;
+  
 }
 
 void Motor_L29::SetSpeed(int Velocity)
 {
 
-  dynamic->calculatePID(Velocity);
+  //dynamic->calculatePID(Velocity);
 
-  velocityProcessed = dynamic->PID;
+  velocityProcessed = Velocity ;
   
   if(velocityProcessed > 0)
     {
 
         digitalWrite(MotorPinOneSetUp, HIGH);
 
-        digitalWrite(MotorPinOneSetUp, LOW);
+        digitalWrite(MotorPinTwoSetUp, LOW);
+
+        //digitalWrite(MotorPinOneSetUp, LOW);
+
+        //digitalWrite(MotorPinTwoSetUp, HIGH);
 
     } 
 
     else if (velocityProcessed < 0)
     {
 
-        digitalWrite(MotorPinOneSetUp, LOW);
+         digitalWrite(MotorPinOneSetUp, LOW);
 
-        digitalWrite(MotorPinTwoSetUp, HIGH);
+         digitalWrite(MotorPinTwoSetUp, HIGH);
+
+        //digitalWrite(MotorPinOneSetUp, HIGH);
+
+        //digitalWrite(MotorPinTwoSetUp, LOW);
 
     }
    
@@ -65,11 +71,11 @@ void Motor_L29::run(String Direction)
 
         digitalWrite(MotorPinOneSetUp, HIGH);
 
-        digitalWrite(MotorPinOneSetUp, LOW);
+        digitalWrite(MotorPinTwoSetUp, LOW);
 
     } 
 
-    else if (Direction == "BACKWARD")
+    else  //(Direction == "BACKWARD")
     {
 
         digitalWrite(MotorPinOneSetUp, LOW);
@@ -80,13 +86,10 @@ void Motor_L29::run(String Direction)
 
 }
 
-void Motor_L29::coordinate(int x, int y)
-{
+//void Motor_L29::coordinate(int x, int y)
+//{
 
   
 
 
-}
-
-
-
+//}

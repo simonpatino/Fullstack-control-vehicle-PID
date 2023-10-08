@@ -1,11 +1,13 @@
 #include "ControlPID.h"
 #include <Arduino.h>
 
-ControlPID* ControlPID::objectInstance = nullptr;
+//ControlPID* ControlPID::objectInstance = nullptr;
 
 ControlPID::ControlPID(int ENCA_ONE, int ENCA_TWO)
 
 {
+
+  errorIntegral = 0;
 
   ENCA_One = ENCA_ONE;
 
@@ -23,59 +25,46 @@ ControlPID::ControlPID(int ENCA_ONE, int ENCA_TWO)
 
 }
 
-void ControlPID::encoderRutine()
-{
+//void ControlPID::encoderRutine()
+//{
   
-  objectInstance = this;
+//  objectInstance = this;
   
-  attachInterrupt(digitalPinToInterrupt(ENCA_Two),staticEncoderRutine,RISING);
+//  attachInterrupt(digitalPinToInterrupt(ENCA_Two),staticEncoderRutine,RISING);
 
-}
+//}
 
-void  IRAM_ATTR ControlPID::readEncoder()
-{
+//void  IRAM_ATTR ControlPID::readEncoder(int increment)
+//{
 
-  StateEncoder = digitalRead(ENCA_One);
 
-  increment = 0;
+//  currT_velocity = micros();
 
-  if (StateEncoder > 0)
-  {
+  //deltaT_velocity = ((float)(currT_velocity - prevT_velocity)) / 1.0e6 ;
 
-    increment = 1;
+  //velocity = increment / deltaT_velocity;
 
-  }
+  //prevT_velocity = currT_velocity;
 
-  else
-  {
+//}
 
-    increment = -1;
 
-  }
-
-  currT_velocity = micros();
-
-  deltaT_velocity = ((float)(currT_velocity - prevT_velocity)) / 1.0e6 ;
-
-  velocity = increment / deltaT_velocity;
-
-  prevT_velocity = currT_velocity;
-
-}
-
-void ControlPID::staticEncoderRutine() 
-{
+//void ControlPID::staticEncoderRutine() 
+//{
   
-  if (objectInstance) 
-  {
+//  if (objectInstance) 
+//  {
     
-    objectInstance->readEncoder();
+//    objectInstance->readEncoder();
     
-  }
+//  }
   
-}
+//}
 
-void ControlPID::calculatePID(float velocityInput )
+
+
+
+void ControlPID::calculatePID(float velocityGoal, float velocity )
 {
 
   currT_pid = micros();
@@ -84,7 +73,7 @@ void ControlPID::calculatePID(float velocityInput )
 
   prevT_pid = currT_pid;
 
-  errorValue = velocityInput - velocity;
+  errorValue = velocityGoal - velocity;
 
   errorDerivative = (errorValue - prevE)/ deltaT_pid;
 
@@ -108,6 +97,7 @@ void ControlPID::calculatePID(float velocityInput )
 
   
 
+  
 }
 
 void ControlPID::setResolution(int Resolution)
