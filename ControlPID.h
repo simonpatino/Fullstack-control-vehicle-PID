@@ -72,7 +72,7 @@ class ControlPID
 
     const float ki = 4;
 
-    const float kd = 0;
+    const float kd = 1;
   
 };
 

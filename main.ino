@@ -4,25 +4,25 @@
 #include "Motor_L29.h"
 #include <Arduino.h>
 
-#define motorOneFrequency 490
-#define motorTwoFrequency 490
-#define motorThreeFrequency 490
-#define motorFourthFrequency 490
+#define motorOneFrequency 5000
+#define motorTwoFrequency 5000
+#define motorThreeFrequency 5000
+#define motorFourthFrequency 5000
 
 #define motorOneChannel 0
 #define motorTwoChannel 1
 #define motorThreeChannel 2
 #define motorFourthChannel 3
 
-#define motorOneResolution 8
-#define motorTwoResolution 8
-#define motorThreeResolution 8
-#define motorFourthResolution 8
+#define motorOneResolution 12
+#define motorTwoResolution 12
+#define motorThreeResolution 12
+#define motorFourthResolution 12
 
 #define motorOnePWMPin 27
 #define motorTwoPWMPin 33
-#define motorThreePWMPin 4
-#define motorFourthPWMPin 19
+#define motorThreePWMPin 3
+#define motorFourthPWMPin 4
 
 #define motorOnePinOne 14
 #define motorOnePinTwo 12
@@ -30,11 +30,11 @@
 #define motorTwoPinOne 25
 #define motorTwoPinTwo 26
 
-#define motorThreePinOne 36
-#define motorThreePinTwo 39
+#define motorThreePinOne 0
+#define motorThreePinTwo 2
 
 #define motorFourthPinOne 21
-#define motorFourthPinTwo 3
+#define motorFourthPinTwo 19
 
 #define motorOnePinOneEncoder 16
 #define motorOnePinTwoEncoder 17
@@ -133,6 +133,12 @@ void setup() {
 
   motorFourthPID.setResolution(motorFourthPWM.Resolution);
 
+  //pinMode(8, OUTPUT);
+  
+  //pinMode(21, OUTPUT);
+
+  
+
 
 
    //pinMode(12, OUTPUT);
@@ -153,13 +159,19 @@ void setup() {
 
    Serial.begin(9600);
 
-   //motorOne.run("FORWAR");
+   //motorOne.run("FORWARD");
 
    //motorTwo.run("FORWARD");
 
-   motorThree.run("FORWAR");
+   //motorThree.run("FORWARD");
 
-   motorFourth.run("FORWARD");
+   //motorFourth.run("FORWARD");
+
+   
+
+   digitalWrite(8,HIGH);
+
+   //digitalWrite(2,LOW);
 
 
 }
@@ -175,17 +187,17 @@ void loop() {
 
   //Serial.println("xd");
 
-  //motorOnePID.calculatePID(300,vfilter[0]);
-  //motorOne.SetSpeed(motorOnePID.PID);
+  motorOnePID.calculatePID(400,vfilter[0]);
+  motorOne.SetSpeed(motorOnePID.PID);
 
-  //motorTwoPID.calculatePID(300,vfilter[1]);
-  //motorTwo.SetSpeed(motorTwoPID.PID);
+  motorTwoPID.calculatePID(0,vfilter[1]);
+  motorTwo.SetSpeed(motorTwoPID.PID);
 
-  //motorThreePID.calculatePID(300,vfilter[2]);
-  //motorThree.SetSpeed(motorThreePID.PID);
+  motorThreePID.calculatePID(0,vfilter[2]);
+  motorThree.SetSpeed(motorThreePID.PID);
 
-  //motorFourthPID.calculatePID(300,vfilter[3]);
-  //motorFourth.SetSpeed(motorFourthPID.PID);
+  motorFourthPID.calculatePID(400,vfilter[3]);
+  motorFourth.SetSpeed(motorFourthPID.PID);
 
    //Serial.print(",");
   Serial.print(vfilter[0]);

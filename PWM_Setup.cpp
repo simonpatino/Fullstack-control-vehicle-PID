@@ -20,6 +20,6 @@ PWM_Setup::PWM_Setup(int PWMPin, int PWMChannel, int PWMFrequency, int PWMresolu
 
     ledcAttachPin(Pin, Channel);
 
-    ledcWrite(Channel, 150);
+    //ledcWrite(Channel, 150);
 
 }
