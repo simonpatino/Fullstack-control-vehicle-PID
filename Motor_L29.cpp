@@ -75,13 +75,22 @@ void Motor_L29::run(String Direction)
 
     } 
 
-    else  //(Direction == "BACKWARD")
+    else if(Direction == "BACKWARD")
     {
 
         digitalWrite(MotorPinOneSetUp, LOW);
 
         digitalWrite(MotorPinTwoSetUp, HIGH);
 
+    }
+
+    else if  (Direction == 0)
+    {
+
+      digitalWrite(MotorPinOneSetUp, LOW);
+
+      digitalWrite(MotorPinTwoSetUp, LOW);
+      
     }
 
 }

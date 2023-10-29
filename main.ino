@@ -4,20 +4,20 @@
 #include "Motor_L29.h"
 #include <Arduino.h>
 
-#define motorOneFrequency 5000
-#define motorTwoFrequency 5000
-#define motorThreeFrequency 5000
-#define motorFourthFrequency 5000
+#define motorOneFrequency 15000
+#define motorTwoFrequency 15000
+#define motorThreeFrequency 15000
+#define motorFourthFrequency 15000
 
 #define motorOneChannel 0
 #define motorTwoChannel 1
 #define motorThreeChannel 2
 #define motorFourthChannel 3
 
-#define motorOneResolution 12
-#define motorTwoResolution 12
-#define motorThreeResolution 12
-#define motorFourthResolution 12
+#define motorOneResolution 14
+#define motorTwoResolution 14
+#define motorThreeResolution 14
+#define motorFourthResolution 14
 
 #define motorOnePWMPin 27
 #define motorTwoPWMPin 33
@@ -169,9 +169,13 @@ void setup() {
 
    
 
-   digitalWrite(8,HIGH);
+   //digitalWrite(8,HIGH);
 
    //digitalWrite(2,LOW);
+
+   //pinMode(34, INPUT);
+
+   //pinMode(35, INPUT);
 
 
 }
@@ -187,24 +191,38 @@ void loop() {
 
   //Serial.println("xd");
 
-  motorOnePID.calculatePID(400,vfilter[0]);
+  //motorOnePID.calculatePID(5000*sin(micros()/10e6*10),vfilter[0]);
+  //motorOne.SetSpeed(motorOnePID.PID);
+
+  //motorTwoPID.calculatePID(5000*cos(micros()/10e6*10),vfilter[1]);
+  //motorTwo.SetSpeed(motorTwoPID.PID);
+
+  //motorThreePID.calculatePID(5000*cos(micros()/10e6*10),vfilter[2]);
+  //motorThree.SetSpeed(motorThreePID.PID);
+
+  //motorFourthPID.calculatePID(5000*sin(micros()/10e6*10),vfilter[3]);
+  //motorFourth.SetSpeed(motorFourthPID.PID);
+
+
+  motorOnePID.calculatePID(500,vfilter[0]);
   motorOne.SetSpeed(motorOnePID.PID);
 
-  motorTwoPID.calculatePID(0,vfilter[1]);
+  motorTwoPID.calculatePID(500,vfilter[1]);
   motorTwo.SetSpeed(motorTwoPID.PID);
 
-  motorThreePID.calculatePID(0,vfilter[2]);
+  motorThreePID.calculatePID(500,vfilter[2]);
   motorThree.SetSpeed(motorThreePID.PID);
 
-  motorFourthPID.calculatePID(400,vfilter[3]);
+  motorFourthPID.calculatePID(500,vfilter[3]);
   motorFourth.SetSpeed(motorFourthPID.PID);
+
 
    //Serial.print(",");
   Serial.print(vfilter[0]);
   Serial.print(",");
-   Serial.print(vfilter[1]);
+  Serial.print(vfilter[1]);
   Serial.print(",");
-   Serial.print(vfilter[2]);
+  Serial.print(vfilter[2]);
   Serial.print(",");
   //Serial.println(150);
   //Serial.println(motorOnePID.PID);
@@ -220,8 +238,18 @@ void loop() {
   //Serial.print(",");
   //Serial.println(motorTwoPID.PID);
 
-  
 
+  //if (digitalRead(34) == HIGH){
+    
+    
+   // Serial.println("alto");
+    //}
+
+   //else {
+
+    //Serial.println("bajo");
+
+    //}
   
 
 }
