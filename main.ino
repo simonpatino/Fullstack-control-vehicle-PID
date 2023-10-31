@@ -4,7 +4,7 @@
 #include "Motor_L29.h"
 #include <Arduino.h>
 
-#define motorOneFrequency 15000
+#define motorOneFrequency 2000
 #define motorTwoFrequency 15000
 #define motorThreeFrequency 15000
 #define motorFourthFrequency 15000
@@ -159,13 +159,13 @@ void setup() {
 
    Serial.begin(9600);
 
-   //motorOne.run("FORWARD");
+   motorOne.run("FORWARD");
 
-   //motorTwo.run("FORWARD");
+   motorTwo.run("FORWARD");
 
-   //motorThree.run("FORWARD");
+   motorThree.run("FORWARD");
 
-   //motorFourth.run("FORWARD");
+   motorFourth.run("FORWARD");
 
    
 
@@ -177,6 +177,8 @@ void setup() {
 
    //pinMode(35, INPUT);
 
+   motorOne.SetSpeed(4000);
+
 
 }
 
@@ -185,7 +187,7 @@ void loop() {
 
   //controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
 
-  //ledcWrite(motorOneChannel, 255);
+  //ledcWrite(motorOneChannel, 5000);
 
   
 
@@ -204,17 +206,18 @@ void loop() {
   //motorFourth.SetSpeed(motorFourthPID.PID);
 
 
-  motorOnePID.calculatePID(500,vfilter[0]);
-  motorOne.SetSpeed(motorOnePID.PID);
+  //motorOnePID.calculatePID(500,vfilter[0]);
+  //motorOne.SetSpeed(motorOnePID.PID);
+  //motorTwo.SetSpeed(5000);
 
-  motorTwoPID.calculatePID(500,vfilter[1]);
-  motorTwo.SetSpeed(motorTwoPID.PID);
+  //motorTwoPID.calculatePID(500,vfilter[1]);
+  //motorTwo.SetSpeed(motorTwoPID.PID);
 
-  motorThreePID.calculatePID(500,vfilter[2]);
-  motorThree.SetSpeed(motorThreePID.PID);
+  //motorThreePID.calculatePID(500,vfilter[2]);
+  //motorThree.SetSpeed(motorThreePID.PID);
 
-  motorFourthPID.calculatePID(500,vfilter[3]);
-  motorFourth.SetSpeed(motorFourthPID.PID);
+  //motorFourthPID.calculatePID(500,vfilter[3]);
+  //motorFourth.SetSpeed(motorFourthPID.PID);
 
 
    //Serial.print(",");
