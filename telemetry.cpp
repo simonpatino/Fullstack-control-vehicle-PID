@@ -5,36 +5,33 @@
 
 #include <DabbleESP32.h>
 
+#include <vector>
+
 telemetry::telemetry()
 {
-  
-  
-  Dabble.begin("Ramon");
-  
-  
+  Dabble.begin("Ramon");  
 }
 
-
-int telemetry::getData(){
+void telemetry::getData(float Values[5])
+{
   
   Dabble.processInput();
 
-  float x = GamePad.getXaxisData();
+  x = GamePad.getXaxisData();
 
-  float y = GamePad.getYaxisData();
+  y = GamePad.getYaxisData();
 
-  float right = 0;
+  right = 0;
 
-  float left = 0; 
+  left = 0; 
 
-  float start = 0;
-
- 
+  start = 0;
 
   if (GamePad.isSelectPressed())
   {
-    
 
+    start = 1;
+    
   }
 
   if (GamePad.isTrianglePressed())
@@ -47,12 +44,10 @@ int telemetry::getData(){
     left =1;    
   }
 
-  
-
-
-  float values[5] = {x,y,left,right,start};
-
-
-    return  values[0];
+  Values[0] = x;
+  Values[1] = y;
+  Values[2] = left;
+  Values[3] = right;
+  Values[4] = start;
   
   }

@@ -3,6 +3,7 @@
 #include "ControlPID.h"
 #include "Motor_L29.h"
 #include <Arduino.h>
+#include "telemetry.h"
 
 #define motorOneFrequency 2000
 #define motorTwoFrequency 15000
@@ -108,6 +109,8 @@ volatile float vfilter[] = {0,0,0,0};
 
 
 void setup() {
+
+  telemetry bluetooth(); 
       
   attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
@@ -184,13 +187,9 @@ void setup() {
 
 void loop() {
   
-
   //controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
 
   //ledcWrite(motorOneChannel, 5000);
-
-  
-
   //Serial.println("xd");
 
   //motorOnePID.calculatePID(5000*sin(micros()/10e6*10),vfilter[0]);
@@ -218,8 +217,6 @@ void loop() {
 
   //motorFourthPID.calculatePID(500,vfilter[3]);
   //motorFourth.SetSpeed(motorFourthPID.PID);
-
-
    //Serial.print(",");
   Serial.print(vfilter[0]);
   Serial.print(",");
@@ -230,7 +227,6 @@ void loop() {
   //Serial.println(150);
   //Serial.println(motorOnePID.PID);
   //Serial.println(",");
-
   Serial.println(vfilter[3]);
   //Serial.println(",");
 

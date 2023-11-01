@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 
+#include <vector>
 
 
 class telemetry
@@ -10,11 +11,22 @@ class telemetry
    
   public:
 
+
+  float x;
+
+  float y;
+
+  float right;
+
+  float left; 
+
+  float start;
+
   
 
    telemetry();
    
-   int getData();
+   void getData(float Values[5]);
 
   
   

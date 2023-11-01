@@ -2,12 +2,10 @@
 #include <Arduino.h>
 
 
-//EngineHB::EngineHB(Motor_L29& motorOne, Motor_L29& motorTwo,Motor_L29& motorThree,Motor_L29& motorFourth){
+//EngineHB::EngineHB(Motor_L29 motorOne, Motor_L29 motorTwo,Motor_L29 motorThree,Motor_L29 motorFourth)
 
- //motorOne = motorOne;
- //motorTwo = motorTwo;
- //motorThree = motorThree;
- //motorFourth = motorFourth ;
+//{
+
 
 //}
 
