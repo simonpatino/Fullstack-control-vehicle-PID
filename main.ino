@@ -105,12 +105,14 @@ volatile float vfilter[] = {0,0,0,0};
 
 #include "templates.h"
 
+telemetry bluetooth; 
+
 
 
 
 void setup() {
 
-  telemetry bluetooth(); 
+ 
       
   attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
@@ -186,6 +188,16 @@ void setup() {
 }
 
 void loop() {
+
+  float DataBluetooth[5];
+
+  bluetooth.getData(DataBluetooth);
+
+  Serial.print(DataBluetooth[0]);
+
+  Serial.print(",");
+
+  Serial.print(DataBluetooth[1]);
   
   //controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
 
@@ -218,16 +230,16 @@ void loop() {
   //motorFourthPID.calculatePID(500,vfilter[3]);
   //motorFourth.SetSpeed(motorFourthPID.PID);
    //Serial.print(",");
-  Serial.print(vfilter[0]);
-  Serial.print(",");
-  Serial.print(vfilter[1]);
-  Serial.print(",");
-  Serial.print(vfilter[2]);
-  Serial.print(",");
+  //Serial.print(vfilter[0]);
+  //Serial.print(",");
+  //Serial.print(vfilter[1]);
+  //Serial.print(",");
+  //Serial.print(vfilter[2]);
+  //Serial.print(",");
   //Serial.println(150);
   //Serial.println(motorOnePID.PID);
   //Serial.println(",");
-  Serial.println(vfilter[3]);
+  //Serial.println(vfilter[3]);
   //Serial.println(",");
 
   //Serial.println(motorOnePID.PID);
