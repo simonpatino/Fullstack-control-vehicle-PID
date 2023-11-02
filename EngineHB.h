@@ -6,6 +6,8 @@
 
 #include "Motor_L29.h"
 
+#include "ControlPID.h"
+
 class EngineHB{
 
   public:
@@ -18,12 +20,16 @@ class EngineHB{
 
   //Motor_L29 motorFourth;
 
+  float lx , ly;
+
 
   const float r = 1;
 
   //EngineHB(Motor_L29 motorOne, Motor_L29 motorTwo,Motor_L29 motorThree,Motor_L29 motorFourth);
 
-  //void coordinate(int x, int y, Motor_L29& motorOne, Motor_L29& motorTwo,Motor_L29& motorThree,Motor_L29& motorFourth);
+  void coordinate(float x, float y, int wz , Motor_L29& motorOne, Motor_L29& motorTwo,Motor_L29& motorThree,Motor_L29& motorFourth,
+  
+                                             ControlPID&  motorOnePID, ControlPID& motorTwoPID, ControlPID& motorThreePID,ControlPID&  motorFourthPID);
 
   private:
 

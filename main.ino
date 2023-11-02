@@ -3,22 +3,24 @@
 #include "ControlPID.h"
 #include "Motor_L29.h"
 #include <Arduino.h>
-#include "telemetry.h"
+//#include "telemetry.h"
+#include <DabbleESP32.h>
+
 
 #define motorOneFrequency 2000
-#define motorTwoFrequency 15000
-#define motorThreeFrequency 15000
-#define motorFourthFrequency 15000
+#define motorTwoFrequency 2000
+#define motorThreeFrequency 2000
+#define motorFourthFrequency 2000
 
 #define motorOneChannel 0
 #define motorTwoChannel 1
 #define motorThreeChannel 2
 #define motorFourthChannel 3
 
-#define motorOneResolution 14
-#define motorTwoResolution 14
-#define motorThreeResolution 14
-#define motorFourthResolution 14
+#define motorOneResolution 8
+#define motorTwoResolution 8
+#define motorThreeResolution 8
+#define motorFourthResolution 8
 
 #define motorOnePWMPin 27
 #define motorTwoPWMPin 33
@@ -49,6 +51,9 @@
 #define motorFourthPinOneEncoder  13
 #define motorFourthPinTwoEncoder  15
 
+#define CUSTOM_SETTINGS
+#define INCLUDE_GAMEPAD_MODULE
+
 
 PWM_Setup motorOnePWM(motorOnePWMPin, motorOneChannel, motorOneFrequency, motorOneResolution);
 
@@ -67,7 +72,11 @@ Motor_L29 motorThree(motorThreePinOne, motorThreePinTwo,motorThreeChannel,motorT
 
 Motor_L29 motorFourth(motorFourthPinOne,motorFourthPinTwo, motorFourthChannel,motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
 
-//EngineHB controlCenter;
+
+
+EngineHB controlCenter;
+
+
 
 ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
 
@@ -76,6 +85,8 @@ ControlPID motorTwoPID(motorTwoPinOneEncoder, motorTwoPinTwoEncoder);
 ControlPID motorThreePID(motorThreePinOneEncoder, motorThreePinTwoEncoder);
 
 ControlPID motorFourthPID(motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
+
+
 
 volatile int positions[] = {0,0,0,0};
 
@@ -103,9 +114,12 @@ volatile float preprevelocity[] = {0,0,0,0};
 
 volatile float vfilter[] = {0,0,0,0};
 
+int wz;
+
+
 #include "templates.h"
 
-telemetry bluetooth; 
+//telemetry bluetooth; 
 
 
 
@@ -114,13 +128,13 @@ void setup() {
 
  
       
-  attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
+ // attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
-  attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
 
-  attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
 
-  attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
 
   //motorOnePID.encoderRutine();
 
@@ -162,15 +176,15 @@ void setup() {
 
    //ledcWrite(0, 254);
 
-   Serial.begin(9600);
+   Serial.begin(115200);
 
-   motorOne.run("FORWARD");
+   //motorOne.run("FORWARD");
 
-   motorTwo.run("FORWARD");
+   //motorTwo.run("FORWARD");
 
-   motorThree.run("FORWARD");
+   //motorThree.run("FORWARD");
 
-   motorFourth.run("FORWARD");
+   //motorFourth.run("FORWARD");
 
    
 
@@ -182,24 +196,82 @@ void setup() {
 
    //pinMode(35, INPUT);
 
-   motorOne.SetSpeed(4000);
+   //motorOne.SetSpeed(4000);
+
+   Dabble.begin("Ramon");  
 
 
 }
 
 void loop() {
 
-  float DataBluetooth[5];
+// ########################  Init Telemetry Code   ########################
 
-  bluetooth.getData(DataBluetooth);
+  Dabble.processInput();
 
-  Serial.print(DataBluetooth[0]);
+   float x = GamePad.getXaxisData();
+
+   float y = GamePad.getYaxisData();
+
+   int start = 0;
+
+   int right = 0;
+
+   int left = 0;
+
+   if (GamePad.isStartPressed())
+  {
+    start = 1;
+  }
+  if (GamePad.isTrianglePressed())
+  {
+    right = 1;
+
+    wz = right;
+  }
+  if (GamePad.isCrossPressed())
+  {
+    left =-1;  
+
+    wz = left;
+  }
+
+  Serial.print(x);
 
   Serial.print(",");
 
-  Serial.print(DataBluetooth[1]);
-  
-  //controlCenter.coordinate(2,3,motorOne,motorTwo,motorThree, motorFourth);
+  Serial.print(y);
+
+  Serial.print(",");
+
+  Serial.print(start);
+
+  Serial.print(",");
+
+  Serial.print(right);
+
+  Serial.print(",");
+
+  Serial.println(left);
+
+//########################### End Telemetry Code ##############################
+
+
+//##################### Init Inverse Kinematics Moves #########################
+
+  controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,
+                              
+                           motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
+                           
+
+//##################### End Inverse Kinematics Moves ##########################
+
+//########################### Init Line Sensor ################################
+
+//########################### End Line Sensor #################################
+
+//############################# Init Debbug ###################################
+
 
   //ledcWrite(motorOneChannel, 5000);
   //Serial.println("xd");
@@ -229,7 +301,7 @@ void loop() {
 
   //motorFourthPID.calculatePID(500,vfilter[3]);
   //motorFourth.SetSpeed(motorFourthPID.PID);
-   //Serial.print(",");
+   //Serial.println(",");
   //Serial.print(vfilter[0]);
   //Serial.print(",");
   //Serial.print(vfilter[1]);
@@ -261,6 +333,8 @@ void loop() {
     //Serial.println("bajo");
 
     //}
+
+//############################# End Debbug ####################################
   
 
 }

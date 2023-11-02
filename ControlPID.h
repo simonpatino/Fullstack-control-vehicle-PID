@@ -44,6 +44,8 @@ class ControlPID
 
   volatile float pos;
 
+  
+
   int normalizeResolution;
 
   int resolution;

@@ -3,23 +3,27 @@
 
 #include <Arduino.h>
 
-#include <DabbleESP32.h>
+//#include <DabbleESP32.h>
 
-#include <vector>
+
 
 telemetry::telemetry()
 {
-  Dabble.begin("Ramon");  
+  //Dabble.begin("Ramon");  
 }
 
 void telemetry::getData(float Values[5])
 {
   
-  Dabble.processInput();
+  //Dabble.processInput();
 
-  x = GamePad.getXaxisData();
+  //x = GamePad.getXaxisData();
 
-  y = GamePad.getYaxisData();
+  //y = GamePad.getYaxisData();
+
+  x = 0;
+
+  y= 0;
 
   right = 0;
 
@@ -27,19 +31,19 @@ void telemetry::getData(float Values[5])
 
   start = 0;
 
-  if (GamePad.isSelectPressed())
+  //if (GamePad.isSelectPressed())
   {
 
     start = 1;
     
   }
 
-  if (GamePad.isTrianglePressed())
+  //if (GamePad.isTrianglePressed())
   {
     right = 1;
   }
 
-  if (GamePad.isCrossPressed())
+  //if (GamePad.isCrossPressed())
   {
     left =1;    
   }

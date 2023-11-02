@@ -3,7 +3,6 @@
 
 #include "Arduino.h"
 
-#include <vector>
 
 
 class telemetry
