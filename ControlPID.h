@@ -56,7 +56,7 @@ class ControlPID
   
   ControlPID(int ENCA_ONE, int ENCA_TWO);
 
-  void encoderRutine();
+  //void encoderRutine();
 
   void readEncoder(volatile int increment);
 

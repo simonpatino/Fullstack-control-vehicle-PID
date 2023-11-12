@@ -14,17 +14,11 @@ Motor_L29::Motor_L29(int MotorPinOne, int MotorPinTwo, int PWMChannel,  int ENCA
     pinMode(MotorPinOneSetUp, OUTPUT);
 
     pinMode(MotorPinTwoSetUp, OUTPUT);
-
-    //ControlPID ax(ENCA_ONE, ENCA_TWO);
-
-    //dynamic = &ax;
   
 }
 
 void Motor_L29::SetSpeed(int Velocity)
 {
-
-  //dynamic->calculatePID(Velocity);
 
   velocityProcessed = Velocity ;
   
@@ -54,8 +48,6 @@ void Motor_L29::SetSpeed(int Velocity)
 
     }
    
-
-
  ledcWrite(Channel, abs(velocityProcessed)); 
 
 }

@@ -2,25 +2,24 @@
 #include "EngineHB.h"
 #include "ControlPID.h"
 #include "Motor_L29.h"
-#include <Arduino.h>
-//#include "telemetry.h"
+//nclude <Arduino.h>
 #include <DabbleESP32.h>
 
 
-#define motorOneFrequency 2000
-#define motorTwoFrequency 2000
-#define motorThreeFrequency 2000
-#define motorFourthFrequency 2000
+#define motorOneFrequency 500
+#define motorTwoFrequency 500
+#define motorThreeFrequency 500
+#define motorFourthFrequency 500
 
 #define motorOneChannel 0
 #define motorTwoChannel 1
 #define motorThreeChannel 2
 #define motorFourthChannel 3
 
-#define motorOneResolution 8
-#define motorTwoResolution 8
-#define motorThreeResolution 8
-#define motorFourthResolution 8
+#define motorOneResolution 14
+#define motorTwoResolution 14
+#define motorThreeResolution 14
+#define motorFourthResolution 14
 
 #define motorOnePWMPin 27
 #define motorTwoPWMPin 33
@@ -73,9 +72,7 @@ Motor_L29 motorThree(motorThreePinOne, motorThreePinTwo,motorThreeChannel,motorT
 Motor_L29 motorFourth(motorFourthPinOne,motorFourthPinTwo, motorFourthChannel,motorFourthPinOneEncoder, motorFourthPinTwoEncoder);
 
 
-
 EngineHB controlCenter;
-
 
 
 ControlPID motorOnePID(motorOnePinOneEncoder, motorOnePinTwoEncoder);
@@ -119,30 +116,19 @@ int wz;
 
 #include "templates.h"
 
-//telemetry bluetooth; 
-
-
-
 
 void setup() {
 
  
       
- // attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
-  //attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
 
-  //attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
 
-  //attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
+  attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
 
-  //motorOnePID.encoderRutine();
-
-  //motorTwoPID.encoderRutine();
-
-  //motorThreePID.encoderRutine();
-
-  //motorFourthPID.encoderRutine();
 
   motorOnePID.setResolution(motorOnePWM.Resolution);
 
@@ -152,53 +138,10 @@ void setup() {
 
   motorFourthPID.setResolution(motorFourthPWM.Resolution);
 
-  //pinMode(8, OUTPUT);
-  
-  //pinMode(21, OUTPUT);
 
-  
+  Serial.begin(115200);
 
-
-
-   //pinMode(12, OUTPUT);
-
-   //pinMode(14, OUTPUT);
-   
-   //digitalWrite(12,LOW);
-
-   //digitalWrite(14,HIGH);
-
- 
-
-   //ledcSetup(0, 1000, 8); 
-
-   //ledcAttachPin(27, 0);
-
-   //ledcWrite(0, 254);
-
-   Serial.begin(115200);
-
-   //motorOne.run("FORWARD");
-
-   //motorTwo.run("FORWARD");
-
-   //motorThree.run("FORWARD");
-
-   //motorFourth.run("FORWARD");
-
-   
-
-   //digitalWrite(8,HIGH);
-
-   //digitalWrite(2,LOW);
-
-   //pinMode(34, INPUT);
-
-   //pinMode(35, INPUT);
-
-   //motorOne.SetSpeed(4000);
-
-   Dabble.begin("Ramon");  
+  Dabble.begin("Ramon");  
 
 
 }
@@ -236,32 +179,32 @@ void loop() {
     wz = left;
   }
 
-  Serial.print(x);
+  //Serial.print(x);
 
-  Serial.print(",");
+  //Serial.print(",");
 
-  Serial.print(y);
+  //Serial.print(y);
 
-  Serial.print(",");
+  //Serial.print(",");
 
-  Serial.print(start);
+  //Serial.print(start);
 
-  Serial.print(",");
+  //Serial.print(",");
 
-  Serial.print(right);
+  //Serial.print(right);
 
-  Serial.print(",");
+  //Serial.print(",");
 
-  Serial.println(left);
+  //Serial.println(left);
 
 //########################### End Telemetry Code ##############################
 
 
 //##################### Init Inverse Kinematics Moves #########################
 
-  controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,
-                              
-                           motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
+  //controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,
+  //                            
+  //                         motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
                            
 
 //##################### End Inverse Kinematics Moves ##########################
@@ -272,47 +215,26 @@ void loop() {
 
 //############################# Init Debbug ###################################
 
+  motorOnePID.calculatePID(5000*sin(micros()/10e6*10),vfilter[0]);
+  motorOne.SetSpeed(motorOnePID.PID);
 
-  //ledcWrite(motorOneChannel, 5000);
-  //Serial.println("xd");
+  motorTwoPID.calculatePID(5000*cos(micros()/10e6*10),vfilter[1]);
+  motorTwo.SetSpeed(motorTwoPID.PID);
 
-  //motorOnePID.calculatePID(5000*sin(micros()/10e6*10),vfilter[0]);
-  //motorOne.SetSpeed(motorOnePID.PID);
+  motorThreePID.calculatePID(5000*cos(micros()/10e6*10),vfilter[2]);
+  motorThree.SetSpeed(motorThreePID.PID);
 
-  //motorTwoPID.calculatePID(5000*cos(micros()/10e6*10),vfilter[1]);
-  //motorTwo.SetSpeed(motorTwoPID.PID);
+  motorFourthPID.calculatePID(5000*sin(micros()/10e6*10),vfilter[3]);
+  motorFourth.SetSpeed(motorFourthPID.PID);
 
-  //motorThreePID.calculatePID(5000*cos(micros()/10e6*10),vfilter[2]);
-  //motorThree.SetSpeed(motorThreePID.PID);
-
-  //motorFourthPID.calculatePID(5000*sin(micros()/10e6*10),vfilter[3]);
-  //motorFourth.SetSpeed(motorFourthPID.PID);
-
-
-  //motorOnePID.calculatePID(500,vfilter[0]);
-  //motorOne.SetSpeed(motorOnePID.PID);
-  //motorTwo.SetSpeed(5000);
-
-  //motorTwoPID.calculatePID(500,vfilter[1]);
-  //motorTwo.SetSpeed(motorTwoPID.PID);
-
-  //motorThreePID.calculatePID(500,vfilter[2]);
-  //motorThree.SetSpeed(motorThreePID.PID);
-
-  //motorFourthPID.calculatePID(500,vfilter[3]);
-  //motorFourth.SetSpeed(motorFourthPID.PID);
-   //Serial.println(",");
-  //Serial.print(vfilter[0]);
-  //Serial.print(",");
-  //Serial.print(vfilter[1]);
-  //Serial.print(",");
-  //Serial.print(vfilter[2]);
-  //Serial.print(",");
-  //Serial.println(150);
-  //Serial.println(motorOnePID.PID);
-  //Serial.println(",");
-  //Serial.println(vfilter[3]);
-  //Serial.println(",");
+  Serial.print(vfilter[0]);
+  Serial.print(",");
+  Serial.print(vfilter[1]);
+  Serial.print(",");
+  Serial.print(vfilter[2]);
+  Serial.print(",");
+  Serial.println(vfilter[3]);
+  
 
   //Serial.println(motorOnePID.PID);
   //Serial.println(",");
@@ -320,19 +242,6 @@ void loop() {
   //Serial.println(velocity[1]);
   //Serial.print(",");
   //Serial.println(motorTwoPID.PID);
-
-
-  //if (digitalRead(34) == HIGH){
-    
-    
-   // Serial.println("alto");
-    //}
-
-   //else {
-
-    //Serial.println("bajo");
-
-    //}
 
 //############################# End Debbug ####################################
   
