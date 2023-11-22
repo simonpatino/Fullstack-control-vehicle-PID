@@ -23,7 +23,7 @@ class EngineHB{
   float lx , ly;
 
 
-  const float r = 1;
+  const float r = 0.033;
 
   //EngineHB(Motor_L29 motorOne, Motor_L29 motorTwo,Motor_L29 motorThree,Motor_L29 motorFourth);
 

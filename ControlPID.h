@@ -64,17 +64,13 @@ class ControlPID
 
   private:
 
-   //static ControlPID* objectInstance;
-   
-   //static void staticEncoderRutine();
-
   protected:
 
-    const float kp = 2.5;
+    const float kp = 0;
 
-    const float ki = 4;
+    const float ki = 1;
 
-    const float kd = 1;
+    const float kd = 0;
   
 };
 

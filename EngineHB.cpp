@@ -11,33 +11,68 @@ extern volatile float vfilter[];
 //}
 
 
-void EngineHB::coordinate(float x, float y, int wz, Motor_L29& motorOne, Motor_L29& motorTwo,Motor_L29& motorThree,Motor_L29& motorFourth,
+void EngineHB::coordinate(float x, float y, int wz, Motor_L29& motorOne, Motor_L29& motorTwo, Motor_L29& motorThree, Motor_L29& motorFourth,
 
-                                                     ControlPID&  motorOnePID, ControlPID& motorTwoPID, ControlPID& motorThreePID,ControlPID&  motorFourthPID)
-                                                     
+                          ControlPID&  motorOnePID, ControlPID& motorTwoPID, ControlPID& motorThreePID, ControlPID&  motorFourthPID)
+
 {
 
-  //lx , ly = 0;
+  lx , ly = 0;
+
+  //##################### Init Tune #####################
 
 
-  motorOnePID.calculatePID((1/r*(x-y))*(60/(2*3.14)) - (lx + ly)*wz, vfilter[0]);
-  motorOne.SetSpeed(motorOnePID.PID);
-
-  motorTwoPID.calculatePID((1/r*(x+y))*(60/(2*3.14)) - (lx + ly)*wz, vfilter[1]);
-  motorTwo.SetSpeed(motorTwoPID.PID);
-
-  motorThreePID.calculatePID((1/r*(x+y))*(60/(2*3.14))  - (lx + ly)*wz, vfilter[2]);
-  motorThree.SetSpeed(motorThreePID.PID);
-
-  motorFourthPID.calculatePID( (1/r*(x-y))*(60/(2*3.14))- (lx + ly)*wz, vfilter[3]);
-  motorFourth.SetSpeed(motorFourthPID.PID);
   
-  //motorOne.SetSpeed((1/r*(x-y))*(60/(2*3.14)) - (lx + ly)*wz );
+  float MotorVelOne = map((1 / r) * (x + y + (lx + ly)*wz) , 0, 250, 0, 16383);
 
-  //motorTwo.SetSpeed((1/r*(x+y))*(60/(2*3.14)) - (lx + ly)*wz);
-
-  //motorThree.SetSpeed((1/r*(x+y))*(60/(2*3.14))  - (lx + ly)*wz);
-
-  //motorFourth.SetSpeed((1/r*(x-y))*(60/(2*3.14))- (lx + ly)*wz);
+  float MotorVelTwo = map((1 / r) * (x - y - (lx + ly)*wz) , 0, 250, 0, 16383);
   
+  float MotorVelThree =  map((1 / r) * (x + y - (lx + ly)*wz) , 0, 250, 0, 16383);
+
+  float MotorVelFourth = map((1 / r) * (x - y + (lx + ly)*wz) , 0, 250, 0, 16383);
+
+
+//if ( -6000 < MotorVelOne < 6000) {
+//
+//  MotorVelOne = 0;
+//
+//}
+//
+//if ( -4000 < MotorVelTwo < 4000) {
+//
+//  MotorVelTwo = 0;
+//
+//}
+//
+//if ( -6000 < MotorVelThree < 6000) {
+//
+//  MotorVelThree = 0;
+//
+//}
+//
+//if ( -6000 < MotorVelFourth < 6000) {
+//
+//  MotorVelFourth = 0;
+//
+//}
+
+//#################### End Tune #######################
+
+
+//#################### Init Move ######################
+
+//motorOnePID.calculatePID( map(1/r*(x-y- (lx + ly)*wz) ,0,250,0,625) , vfilter[0]);
+motorOne.SetSpeed(MotorVelOne);
+
+//motorTwoPID.calculatePID(map(1/r*(x+y- (lx + ly)*wz), 0,250,0,625), vfilter[1]);
+motorTwo.SetSpeed(MotorVelTwo);
+
+//motorThreePID.calculatePID(map(1/r*(x+y- (lx + ly)*wz), 0,250,0,625), vfilter[2]);
+motorThree.SetSpeed(MotorVelThree);
+
+//motorFourthPID.calculatePID( map(1/r*(x-y- (lx + ly)*wz),0,250,0,625), vfilter[3]);
+motorFourth.SetSpeed(MotorVelFourth);
+
+//################### End Move #########################
+
 }

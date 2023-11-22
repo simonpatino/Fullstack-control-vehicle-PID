@@ -6,10 +6,10 @@
 #include <DabbleESP32.h>
 
 
-#define motorOneFrequency 500
-#define motorTwoFrequency 500
-#define motorThreeFrequency 500
-#define motorFourthFrequency 500
+#define motorOneFrequency 6000
+#define motorTwoFrequency 6000
+#define motorThreeFrequency 6000
+#define motorFourthFrequency 6000
 
 #define motorOneChannel 0
 #define motorTwoChannel 1
@@ -29,14 +29,14 @@
 #define motorOnePinOne 14
 #define motorOnePinTwo 12
 
-#define motorTwoPinOne 25
-#define motorTwoPinTwo 26
+#define motorTwoPinOne 26
+#define motorTwoPinTwo 25
 
-#define motorThreePinOne 0
-#define motorThreePinTwo 2
+#define motorThreePinOne   0
+#define motorThreePinTwo   2
 
-#define motorFourthPinOne 21
-#define motorFourthPinTwo 19
+#define motorFourthPinOne 19
+#define motorFourthPinTwo 21
 
 #define motorOnePinOneEncoder 16
 #define motorOnePinTwoEncoder 17
@@ -119,29 +119,30 @@ int wz;
 
 void setup() {
 
- 
       
-  attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
-  attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
 
-  attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorThreePinTwoEncoder),readEncoder<2>,RISING);
 
-  attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
+  //attachInterrupt(digitalPinToInterrupt(motorFourthPinTwoEncoder),readEncoder<3>,RISING);
 
 
-  motorOnePID.setResolution(motorOnePWM.Resolution);
+  //motorOnePID.setResolution(motorOnePWM.Resolution);
 
-  motorTwoPID.setResolution(motorTwoPWM.Resolution);
+  //motorTwoPID.setResolution(motorTwoPWM.Resolution);
 
-  motorThreePID.setResolution(motorThreePWM.Resolution);
+  //motorThreePID.setResolution(motorThreePWM.Resolution);
 
-  motorFourthPID.setResolution(motorFourthPWM.Resolution);
+  //motorFourthPID.setResolution(motorFourthPWM.Resolution);
 
 
   Serial.begin(115200);
 
   Dabble.begin("Ramon");  
+
+  
 
 
 }
@@ -168,22 +169,34 @@ void loop() {
   }
   if (GamePad.isTrianglePressed())
   {
-    right = 1;
-
-    wz = right;
-  }
+    
+    wz = 1;  //right
+    
+  } else {
+    
+    
+    wz = 0;
+    
+    }
+    
   if (GamePad.isCrossPressed())
   {
-    left =-1;  
+     
+    wz = -1;  //left
+    
+  } else {
+    
+    wz = 0;
+    
+    }
 
-    wz = left;
-  }
+  int lx, ly = 0;
 
-  //Serial.print(x);
+  Serial.println(map((1 / 0.033) * (x + y + (lx + ly)*wz) , 0, 250, 0, 16383));
 
   //Serial.print(",");
 
-  //Serial.print(y);
+  //Serial.println(map(1/0.033*(x+y- (lx + ly)*wz) ,0,300,0,16383)) ;
 
   //Serial.print(",");
 
@@ -202,11 +215,16 @@ void loop() {
 
 //##################### Init Inverse Kinematics Moves #########################
 
-  //controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,
-  //                            
-  //                         motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
-                           
+  controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,                             
+                           motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
 
+
+  //motorTwo.SetSpeed(10000);
+
+  //motorThree.SetSpeed(15000);
+
+ 
+                           
 //##################### End Inverse Kinematics Moves ##########################
 
 //########################### Init Line Sensor ################################
@@ -215,25 +233,25 @@ void loop() {
 
 //############################# Init Debbug ###################################
 
-  motorOnePID.calculatePID(5000*sin(micros()/10e6*10),vfilter[0]);
-  motorOne.SetSpeed(motorOnePID.PID);
+  //motorOnePID.calculatePID(5000*sin(micros()/10e6*10),vfilter[0]);
+  //motorOne.SetSpeed(motorOnePID.PID);
 
-  motorTwoPID.calculatePID(5000*cos(micros()/10e6*10),vfilter[1]);
-  motorTwo.SetSpeed(motorTwoPID.PID);
+  //motorTwoPID.calculatePID(5000*cos(micros()/10e6*10),vfilter[1]);
+  //motorTwo.SetSpeed(motorTwoPID.PID);
 
-  motorThreePID.calculatePID(5000*cos(micros()/10e6*10),vfilter[2]);
-  motorThree.SetSpeed(motorThreePID.PID);
+  //motorThreePID.calculatePID(5000*cos(micros()/10e6*10),vfilter[2]);
+  //motorThree.SetSpeed(motorThreePID.PID);
 
-  motorFourthPID.calculatePID(5000*sin(micros()/10e6*10),vfilter[3]);
-  motorFourth.SetSpeed(motorFourthPID.PID);
+  //motorFourthPID.calculatePID(5000*sin(micros()/10e6*10),vfilter[3]);
+  //motorFourth.SetSpeed(motorFourthPID.PID);
 
-  Serial.print(vfilter[0]);
-  Serial.print(",");
-  Serial.print(vfilter[1]);
-  Serial.print(",");
-  Serial.print(vfilter[2]);
-  Serial.print(",");
-  Serial.println(vfilter[3]);
+  //Serial.print(vfilter[0]);
+  //Serial.print(",");
+  //Serial.print(vfilter[1]);
+  //Serial.print(",");
+  //Serial.print(vfilter[2]);
+  //Serial.print(",");
+  //Serial.println(vfilter[3]);
   
 
   //Serial.println(motorOnePID.PID);
