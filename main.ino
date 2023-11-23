@@ -6,10 +6,10 @@
 #include <DabbleESP32.h>
 
 
-#define motorOneFrequency 6000
-#define motorTwoFrequency 6000
-#define motorThreeFrequency 6000
-#define motorFourthFrequency 6000
+#define motorOneFrequency 800
+#define motorTwoFrequency 800
+#define motorThreeFrequency 800
+#define motorFourthFrequency 800
 
 #define motorOneChannel 0
 #define motorTwoChannel 1
@@ -111,7 +111,7 @@ volatile float preprevelocity[] = {0,0,0,0};
 
 volatile float vfilter[] = {0,0,0,0};
 
-int wz;
+
 
 
 #include "templates.h"
@@ -159,30 +159,27 @@ void loop() {
 
    int start = 0;
 
-   int right = 0;
+   int wz = 0;
 
-   int left = 0;
-
+   
    if (GamePad.isStartPressed())
   {
+    
     start = 1;
+    
   }
+  
   if (GamePad.isTrianglePressed())
   {
     
-    wz = 1;  //right
+    wz = 10;  //right
     
-  } else {
+  } 
     
-    
-    wz = 0;
-    
-    }
-    
-  if (GamePad.isCrossPressed())
+  else if (GamePad.isCrossPressed())
   {
      
-    wz = -1;  //left
+    wz = -10;  //left
     
   } else {
     
@@ -190,13 +187,15 @@ void loop() {
     
     }
 
-  int lx, ly = 0;
+  //################### Telemetry Debug #######################################
 
-  Serial.println(map((1 / 0.033) * (x + y + (lx + ly)*wz) , 0, 250, 0, 16383));
+  //int lx, ly = 125;
+
+  //Serial.print( map( (x + y + wz) , 0, 14, 0, 16383));
 
   //Serial.print(",");
 
-  //Serial.println(map(1/0.033*(x+y- (lx + ly)*wz) ,0,300,0,16383)) ;
+  //Serial.println( map( (x - y + wz) , 0, 14, 0, 16383)) ;
 
   //Serial.print(",");
 
@@ -222,6 +221,8 @@ void loop() {
   //motorTwo.SetSpeed(10000);
 
   //motorThree.SetSpeed(15000);
+
+  //motorFourth.SetSpeed(5000);
 
  
                            
@@ -253,7 +254,6 @@ void loop() {
   //Serial.print(",");
   //Serial.println(vfilter[3]);
   
-
   //Serial.println(motorOnePID.PID);
   //Serial.println(",");
 

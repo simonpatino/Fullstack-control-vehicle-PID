@@ -17,44 +17,28 @@ void EngineHB::coordinate(float x, float y, int wz, Motor_L29& motorOne, Motor_L
 
 {
 
-  lx , ly = 0;
+  lx , ly = 125;
 
   //##################### Init Tune #####################
 
 
+  //float MotorVelOne = map((1 / r) * (x + y + (lx + ly)*wz) , 0, 210, 0, 16383);
+
+  //float MotorVelTwo = map((1 / r) * (x - y - (lx + ly)*wz) , 0, 210, 0, 16383);
   
-  float MotorVelOne = map((1 / r) * (x + y + (lx + ly)*wz) , 0, 250, 0, 16383);
+  //float MotorVelThree =  map((1 / r) * (x + y - (lx + ly)*wz) , 0, 210, 0, 16383);
 
-  float MotorVelTwo = map((1 / r) * (x - y - (lx + ly)*wz) , 0, 250, 0, 16383);
+  //float MotorVelFourth = map((1 / r) * (x - y + (lx + ly)*wz) , 0, 210, 0, 16383);
+
+    
+  float MotorVelOne = map( (x + y + wz) , 0, 14, 0, 16383);
+
+  float MotorVelTwo = map( (x - y + wz) , 0, 14, 0, 16383);
   
-  float MotorVelThree =  map((1 / r) * (x + y - (lx + ly)*wz) , 0, 250, 0, 16383);
+  float MotorVelThree =  map( (x + y - wz) , 0, 14, 0, 16383);
 
-  float MotorVelFourth = map((1 / r) * (x - y + (lx + ly)*wz) , 0, 250, 0, 16383);
+  float MotorVelFourth = map(  (x - y - wz) , 0, 14, 0, 16383);
 
-
-//if ( -6000 < MotorVelOne < 6000) {
-//
-//  MotorVelOne = 0;
-//
-//}
-//
-//if ( -4000 < MotorVelTwo < 4000) {
-//
-//  MotorVelTwo = 0;
-//
-//}
-//
-//if ( -6000 < MotorVelThree < 6000) {
-//
-//  MotorVelThree = 0;
-//
-//}
-//
-//if ( -6000 < MotorVelFourth < 6000) {
-//
-//  MotorVelFourth = 0;
-//
-//}
 
 //#################### End Tune #######################
 
