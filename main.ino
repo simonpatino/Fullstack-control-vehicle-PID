@@ -2,9 +2,14 @@
 #include "EngineHB.h"
 #include "ControlPID.h"
 #include "Motor_L29.h"
-//nclude <Arduino.h>
+//include <Arduino.h>
 #include <DabbleESP32.h>
 
+#define S1 32
+#define S2 35
+#define S3 34
+#define S4 39
+#define S5 36
 
 #define motorOneFrequency 800
 #define motorTwoFrequency 800
@@ -111,15 +116,14 @@ volatile float preprevelocity[] = {0,0,0,0};
 
 volatile float vfilter[] = {0,0,0,0};
 
-
-
-
 #include "templates.h"
 
+#include "sensor_line.h"
 
 void setup() {
 
-      
+  //############################ Setup PID ###################################
+
   //attachInterrupt(digitalPinToInterrupt(motorOnePinTwoEncoder),readEncoder<0>,RISING);
 
   //attachInterrupt(digitalPinToInterrupt(motorTwoPinTwoEncoder),readEncoder<1>,RISING);
@@ -137,12 +141,46 @@ void setup() {
 
   //motorFourthPID.setResolution(motorFourthPWM.Resolution);
 
+  //########################   End Setup PID ###################################
+
+
+
+
+  //############################ Common Setup ##################################
 
   Serial.begin(115200);
 
+  //########################## EndCommon Setup #################################
+
+
+
+
+
+  //############################ Bluetooth Setup ###############################
+
   Dabble.begin("Ramon");  
 
+  //########################## End Bluetooth Setup ##############################
+
+
+
+
   
+  //############################ Sensor line Setup ###############################
+
+  //NOTE: Sensor were counted from left to right 
+
+   pinMode(S1 , INPUT);
+
+   pinMode(S2 , INPUT);
+
+   pinMode(S3 , INPUT);
+
+   pinMode(S4 , INPUT);
+
+   pinMode(S5 , INPUT);
+
+  //############################ End Sensor line Setup #############################
 
 
 }
@@ -229,6 +267,8 @@ void loop() {
 //##################### End Inverse Kinematics Moves ##########################
 
 //########################### Init Line Sensor ################################
+
+  tracking();
 
 //########################### End Line Sensor #################################
 
