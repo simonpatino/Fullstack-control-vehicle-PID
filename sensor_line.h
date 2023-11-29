@@ -1,20 +1,20 @@
 
 //####################### Functions of moving ##########################
 
-void forward(int speed)
+void forward(int speed_left, int speed_right)
 {
-    motorTwo.SetSpeed(speed);
-    motorThree.SetSpeed(speed);
-    motorOne.SetSpeed(speed);
-    motorFour.SetSpeed(speed);
+    motorTwo.SetSpeed(-speed_left);
+    motorThree.SetSpeed(speed_left);
+    motorOne.SetSpeed(speed_right);
+    motorFourth.SetSpeed(-speed_right);
 }
 
 void reverse(int speed)
 {
-    motorTwo.SetSpeed(-speed);
+    motorTwo.SetSpeed(speed);
     motorThree.SetSpeed(-speed);
     motorOne.SetSpeed(-speed);
-    motorFour.SetSpeed(-speed);
+    motorFourth.SetSpeed(speed);
 }
 
 void right_shift(int speed_fl_fwd, int speed_rl_bck, int speed_rr_fwd, int speed_fr_bck)
@@ -22,7 +22,7 @@ void right_shift(int speed_fl_fwd, int speed_rl_bck, int speed_rr_fwd, int speed
     motorTwo.SetSpeed(speed_fl_fwd);
     motorThree.SetSpeed(-speed_rl_bck);
     motorOne.SetSpeed(speed_rr_fwd);
-    motorFour.SetSpeed(-speed_fr_bck);
+    motorFourth.SetSpeed(-speed_fr_bck);
 }
 
 void left_shift(int speed_fl_bck, int speed_rl_fwd, int speed_rr_bck, int speed_fr_fwd)
@@ -30,7 +30,7 @@ void left_shift(int speed_fl_bck, int speed_rl_fwd, int speed_rr_bck, int speed_
     motorTwo.SetSpeed(-speed_fl_bck);
     motorThree.SetSpeed(speed_rl_fwd);
     motorOne.SetSpeed(-speed_rr_bck);
-    motorFour.SetSpeed(speed_fr_fwd);
+    motorFourth.SetSpeed(speed_fr_fwd);
 }
 
 void left_turn(int speed)
@@ -38,40 +38,41 @@ void left_turn(int speed)
     motorTwo.SetSpeed(0);
     motorThree.SetSpeed(0);
     motorOne.SetSpeed(speed);
-    motorFour.SetSpeed(speed);
+    motorFourth.SetSpeed(-speed);
 }
 
 void right_turn(int speed)
 {
-    motorTwo.SetSpeed(speed);
+    motorTwo.SetSpeed(-speed);
     motorThree.SetSpeed(speed);
     motorOne.SetSpeed(0);
-    motorFour.SetSpeed(0);
+    motorFourth.SetSpeed(0);
 }
 
 // Without using 
+    
 void right_back(int speed)
 {
-    motorTwo.SetSpeed(-speed);
+    motorTwo.SetSpeed(speed);
     motorThree.SetSpeed(0);
     motorOne.SetSpeed(0);
-    motorFour.SetSpeed(-speed);
+    motorFourth.SetSpeed(speed);
 }
 
 void sharpRightTurn(int speed_left, int speed_right)
 {
-    motorTwo.SetSpeed(speed_left);
+    motorTwo.SetSpeed(-speed_left);
     motorThree.SetSpeed(speed_right);
     motorOne.SetSpeed(-speed_right);
-    motorFour.SetSpeed(-speed_left);
+    motorFourth.SetSpeed(speed_left);
 }
 
 void sharpLeftTurn(int speed_left, int speed_right)
 {
-    motorTwo.SetSpeed(-speed_left);
+    motorTwo.SetSpeed(speed_left);
     motorThree.SetSpeed(-speed_left);
     motorOne.SetSpeed(speed_right);
-    motorFour.SetSpeed(speed_right);
+    motorFourth.SetSpeed(-speed_right);
 }
 
 void stop_bot() 
@@ -91,13 +92,14 @@ void stop_bot()
 
 
 //#################### Line Sensor Tracking  ##########################
-16383
-#define HIGH_SPEED 16383*0.65    
-#define MID_SPEED 16383*0.5    
-#define LOW_SPEED 16383*0.4    
-#define LONG_DELAY_TIME 70 
-#define DELAY_TIME 40 
-#define SHORT_DELAY_TIME 30 
+
+#define HIGH_SPEED 16383
+#define MID_SPEED 16383   // 65 , 625 is the best option
+#define LOW_SPEED 16383*0.72     //here was 0.5 in good options     
+#define LONG_DELAY_TIME 70*1.8 
+#define DELAY_TIME 40*1.8 
+#define SHORT_DELAY_TIME 30*1.8 
+#define a 0.65
 
 void tracking()
 {
@@ -117,7 +119,7 @@ void tracking()
 
   senstr=senstr.substring(1,6);
   
-  //Serial.print(senstr);
+  Serial.println(senstr);
   //Serial.print("\t");
  
   if ( senstr=="10000" || senstr=="01000" || senstr=="11000")
@@ -144,10 +146,10 @@ void tracking()
   }
  if (senstr=="01110" || senstr=="01010" || senstr=="00100"  || senstr=="10001"  || senstr=="10101"  || senstr=="10011" || senstr=="11101" || senstr=="10111" || senstr=="11011"  || senstr=="11001")
   {
-     Serial.println("Forward");
-      forward(MID_SPEED,MID_SPEED);
+     Serial.println("Forward");          //FORWARD
+      forward(HIGH_SPEED*a,HIGH_SPEED*a);
       delay(DELAY_TIME);
-       stop_bot(); 
+      stop_bot(); 
   }
  if ( senstr=="00110" || senstr=="01111" || senstr=="01001" || senstr=="01011" || senstr=="01101")
   {
@@ -171,11 +173,15 @@ void tracking()
       stop_bot();   
         
  }
-  if (  senstr=="00000"){
-        reverse(MID_SPEED);
-   
-      delay(DELAY_TIME/2*3);
-      stop_bot();  
+  if (  senstr=="00000"){      //REVERSE
+
+      
+ forward(HIGH_SPEED*a,HIGH_SPEED*a); 
+
+      //reverse(MID_SPEED*0.625)    // here was mid speed with 0.625
+ 
+      //delay(DELAY_TIME);
+      //stop_bot();  
   }
  if (  senstr=="11111")
  {
@@ -184,6 +190,8 @@ void tracking()
       delay(DELAY_TIME);
       stop_bot();     
  }
+
+}
 
 
 

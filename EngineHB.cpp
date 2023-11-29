@@ -21,42 +21,73 @@ void EngineHB::coordinate(float x, float y, int wz, Motor_L29& motorOne, Motor_L
 
   //##################### Init Tune #####################
 
+  if ( x > 3) {
 
-  //float MotorVelOne = map((1 / r) * (x + y + (lx + ly)*wz) , 0, 210, 0, 16383);
+    x = 7;
 
-  //float MotorVelTwo = map((1 / r) * (x - y - (lx + ly)*wz) , 0, 210, 0, 16383);
-  
-  //float MotorVelThree =  map((1 / r) * (x + y - (lx + ly)*wz) , 0, 210, 0, 16383);
+  }
 
-  //float MotorVelFourth = map((1 / r) * (x - y + (lx + ly)*wz) , 0, 210, 0, 16383);
+  else if ( x < -3) {
 
-    
-  float MotorVelOne = map( (x + y + wz) , 0, 14, 0, 16383);
+    x = -7;
 
-  float MotorVelTwo = map( (x - y + wz) , 0, 14, 0, 16383);
-  
-  float MotorVelThree =  map( (x + y - wz) , 0, 14, 0, 16383);
-
-  float MotorVelFourth = map(  (x - y - wz) , 0, 14, 0, 16383);
+  }
 
 
-//#################### End Tune #######################
+  else {
+
+    x = 0;
+
+  }
 
 
-//#################### Init Move ######################
+  if ( y > 3) {
 
-//motorOnePID.calculatePID( map(1/r*(x-y- (lx + ly)*wz) ,0,250,0,625) , vfilter[0]);
-motorOne.SetSpeed(MotorVelOne);
+    y = 7;
 
-//motorTwoPID.calculatePID(map(1/r*(x+y- (lx + ly)*wz), 0,250,0,625), vfilter[1]);
-motorTwo.SetSpeed(MotorVelTwo);
+  }
 
-//motorThreePID.calculatePID(map(1/r*(x+y- (lx + ly)*wz), 0,250,0,625), vfilter[2]);
-motorThree.SetSpeed(MotorVelThree);
 
-//motorFourthPID.calculatePID( map(1/r*(x-y- (lx + ly)*wz),0,250,0,625), vfilter[3]);
-motorFourth.SetSpeed(MotorVelFourth);
+  else if ( y < -3) {
 
-//################### End Move #########################
+    y = -7;
+
+  }
+
+
+  else {
+
+    y = 0;
+
+  }
+
+
+  float MotorVelOne = map( (x - y + wz) , 0, 14, 0, 16383);
+
+  float MotorVelTwo = map( (x + y + wz) , 0, 14, 0, 16383);
+
+  float MotorVelThree =  map( (x - y - wz) , 0, 14, 0, 16383);
+
+  float MotorVelFourth = map(  (x + y - wz) , 0, 14, 0, 16383);
+
+
+  //#################### End Tune #######################
+
+
+  //#################### Init Move ######################
+
+  //motorOnePID.calculatePID( map(1/r*(x-y- (lx + ly)*wz) ,0,250,0,625) , vfilter[0]);
+  motorOne.SetSpeed(MotorVelOne);
+
+  //motorTwoPID.calculatePID(map(1/r*(x+y- (lx + ly)*wz), 0,250,0,625), vfilter[1]);
+  motorTwo.SetSpeed(MotorVelTwo);
+
+  //motorThreePID.calculatePID(map(1/r*(x+y- (lx + ly)*wz), 0,250,0,625), vfilter[2]);
+  motorThree.SetSpeed(MotorVelThree);
+
+  //motorFourthPID.calculatePID( map(1/r*(x-y- (lx + ly)*wz),0,250,0,625), vfilter[3]);
+  motorFourth.SetSpeed(MotorVelFourth);
+
+  //################### End Move #########################
 
 }

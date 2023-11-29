@@ -11,7 +11,8 @@
 #define S4 39
 #define S5 36
 
-#define motorOneFrequency 800
+
+#define motorOneFrequency 800 // 800
 #define motorTwoFrequency 800
 #define motorThreeFrequency 800
 #define motorFourthFrequency 800
@@ -158,7 +159,7 @@ void setup() {
 
   //############################ Bluetooth Setup ###############################
 
-  Dabble.begin("Ramon");  
+  //Dabble.begin("Ramon");  
 
   //########################## End Bluetooth Setup ##############################
 
@@ -225,7 +226,7 @@ void loop() {
     
     }
 
-  //################### Telemetry Debug #######################################
+  //######################## Telemetry Debug ##################################
 
   //int lx, ly = 125;
 
@@ -252,9 +253,11 @@ void loop() {
 
 //##################### Init Inverse Kinematics Moves #########################
 
-  controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,                             
-                           motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
+  //controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,                             
+    //                       motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
 
+
+  //motorOne.SetSpeed(16000);
 
   //motorTwo.SetSpeed(10000);
 
