@@ -5,8 +5,8 @@ This is a project focus on development a full environment(libraries) to control 
 
 ### Real pictures 
 
-![alt text](https://github.com/simonpatino/Fullstack-control-vehicle-PID/blob/main/pictures/1.png)
+![alt text](https://github.com/simonpatino/Fullstack-control-vehicle-PID/blob/main/pictures/1.jpeg)
 
 ---
 
-![alt text](https://github.com/simonpatino/Fullstack-control-vehicle-PID/blob/main/pictures/2.png)
+![alt text](https://github.com/simonpatino/Fullstack-control-vehicle-PID/blob/main/pictures/2.jpeg)
