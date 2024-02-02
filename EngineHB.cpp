@@ -62,6 +62,20 @@ void EngineHB::coordinate(float x, float y, int wz, Motor_L29& motorOne, Motor_L
   }
 
 
+  if ( x == 7 and y == 0){
+    
+    x = 12;
+    
+    }
+
+
+  if ( x == -7 and y == 0){
+    
+    x = -12;
+    
+    }
+
+
   float MotorVelOne = map( (x - y + wz) , 0, 14, 0, 16383);
 
   float MotorVelTwo = map( (x + y + wz) , 0, 14, 0, 16383);

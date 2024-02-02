@@ -149,7 +149,7 @@ void setup() {
 
   //############################ Common Setup ##################################
 
-  Serial.begin(115200);
+  //Serial.begin(115200);
 
   //########################## EndCommon Setup #################################
 
@@ -159,7 +159,7 @@ void setup() {
 
   //############################ Bluetooth Setup ###############################
 
-  //Dabble.begin("Ramon");  
+  Dabble.begin("Ramon");  
 
   //########################## End Bluetooth Setup ##############################
 
@@ -253,8 +253,8 @@ void loop() {
 
 //##################### Init Inverse Kinematics Moves #########################
 
-  //controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,                             
-    //                       motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
+  controlCenter.coordinate(x,y, wz, motorOne,motorTwo,motorThree, motorFourth,                             
+                           motorOnePID, motorTwoPID, motorThreePID, motorFourthPID );
 
 
   //motorOne.SetSpeed(16000);
@@ -271,7 +271,7 @@ void loop() {
 
 //########################### Init Line Sensor ################################
 
-  tracking();
+  //tracking();
 
 //########################### End Line Sensor #################################
 

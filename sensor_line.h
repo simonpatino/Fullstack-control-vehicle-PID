@@ -94,12 +94,12 @@ void stop_bot()
 //#################### Line Sensor Tracking  ##########################
 
 #define HIGH_SPEED 16383
-#define MID_SPEED 16383   // 65 , 625 is the best option
-#define LOW_SPEED 16383*0.72     //here was 0.5 in good options     
+#define MID_SPEED 16383*0.92   // 65 , 625 is the best option
+#define LOW_SPEED 16383*0.8     //here was 0.5 in good options     
 #define LONG_DELAY_TIME 70*1.8 
 #define DELAY_TIME 40*1.8 
 #define SHORT_DELAY_TIME 30*1.8 
-#define a 0.65
+#define a 0.69
 
 void tracking()
 {
@@ -176,12 +176,12 @@ void tracking()
   if (  senstr=="00000"){      //REVERSE
 
       
- forward(HIGH_SPEED*a,HIGH_SPEED*a); 
+ //forward(HIGH_SPEED*a,HIGH_SPEED*a); 
 
-      //reverse(MID_SPEED*0.625)    // here was mid speed with 0.625
+      reverse(MID_SPEED*0.65) ;   // here was mid speed with 0.625
  
-      //delay(DELAY_TIME);
-      //stop_bot();  
+      delay(DELAY_TIME);
+      stop_bot();  
   }
  if (  senstr=="11111")
  {
